@@ -35,7 +35,7 @@ If you saw any error, please reports, it will be a great help.
 # Licence
 You can use any code you found here, some of then I found on the internet too.
 
-I'm using the MIT Licence, take a look on [Licence](LICENCE.MD).
+I'm using the MIT Licence, take a look on [Licence](LICENCE.md).
 
 If you're using this plugin, please give me some credits too.
 
