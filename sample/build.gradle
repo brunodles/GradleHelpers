@@ -29,6 +29,7 @@ buildscript {
     repositories {
         maven { url uri('../repo') }
         mavenLocal()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.github.brunodles:cexec:0.1'
