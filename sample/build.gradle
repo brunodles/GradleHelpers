@@ -24,19 +24,3 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
 }
-
-buildscript {
-    repositories {
-        maven { url uri('../repo') }
-        mavenLocal()
-        maven { url "https://jitpack.io" }
-    }
-    dependencies {
-        classpath 'com.github.brunodles:cexec:0.1'
-    }
-}
-task ifconfig(type: com.github.brunodles.cexec.Cexec) {
-    description "Just print something on screen"
-    command "ifconfig"
-    printCommand false
-}
