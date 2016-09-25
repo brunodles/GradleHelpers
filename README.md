@@ -1,17 +1,16 @@
 # Gradle plugin
 
-This repo is intended to have all my gradle plugins.
+This repo is intended to have all my gradle plugins, tasks and any other gradle files.
 
 Here I'll add custom tasks and build examples of how to use then.
 
-The idea is simple, provide a way to reuse those tasks without messing up my `build.gradle` file with these
-custom tasks.
+The idea was simple, find and provide a way to reuse those tasks without messing up my `build.gradle`.
 
 This could also be used as a helper to show how to use some of gradle capabilities.
 
-# How to
+# What is in this Repo?
 
-## Custom Execute (cexec)
+## Cexec Task - Custom Execute
 
 This is a simple executor, sometimes the default `exec` task does not work as expected.
 
