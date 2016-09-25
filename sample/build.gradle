@@ -1,18 +1,1 @@
-
 apply from: rootProject.file('gradle/jitPack.gradle')
-
-buildscript {
-    repositories {
-        maven { url uri('../repo') }
-        mavenLocal()
-        maven { url "https://jitpack.io" }
-    }
-    dependencies {
-        classpath 'com.github.brunodles:GradleHelpers.cexec:0.2'
-    }
-}
-task ifconfig(type: com.github.brunodles.cexec.Cexec) {
-    description "Just print something on screen"
-    command "ifconfig"
-    printCommand false
-}
