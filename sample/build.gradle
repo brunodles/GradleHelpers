@@ -38,4 +38,5 @@ buildscript {
 task ifconfig(type: com.github.brunodles.cexec.Cexec) {
     description "Just print something on screen"
     command "ifconfig"
+    printCommand false
 }
