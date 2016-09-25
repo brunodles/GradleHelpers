@@ -27,9 +27,8 @@ dependencies {
 
 buildscript {
     repositories {
-        maven {
-            url uri('../repo')
-        }
+        maven { url uri('../repo') }
+        mavenLocal()
     }
     dependencies {
         classpath 'com.github.brunodles:cexec:0.1'

@@ -25,3 +25,6 @@ uploadArchives {
         }
     }
 }
+
+
+apply from: rootProject.file('gradle/jitPack.gradle')

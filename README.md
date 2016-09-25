@@ -7,6 +7,25 @@ Here I'll add custom tasks and build examples of how to use then.
 The idea is simple, provide a way to reuse those tasks without messing up my `build.gradle` file with these
 custom tasks.
 
+This could also be used as a helper to show how to use some of gradle capabilities.
+
+# How to
+
+## Custom Execute (cexec)
+
+This is a simple executor, sometimes the default `exec` task does not work as expected.
+
+I wrote this simple task just to trigger some terminal commands from a gradle task.
+It may looks strange if you only know the basic gradle commands.
+
+Try to imagine the following situations:
+  * Run something before install the app on android. Like the `development backEnd App`, `mocked Api` or anything like thad.
+  * Grab information from the PC to use on the app. When I'm working with both backEnd and Android App,
+  I want to use *my pc IP address* as `API_URL` but I don't want to keep looking on my IP address manually.
+  So we can use a task to do that for us.
+
+I use the `cexec` task to do those tasks. Keep reading, the `IP Grabber` will have it's own task.
+
 # Contributing
 
 You can contribute but showing your custom tasks, or submitting a new task.
@@ -31,3 +50,8 @@ This one have many sources, I don't remember where I found it at first, it was o
 Now we have many articles about it, so I'll link then.
 * [Bartinger](http://bartinger.at/inject-dynamic-host-ip-address-with-gradle/)
 * [jeremie-martinez](http://jeremie-martinez.com/2015/05/05/inject-host-gradle/)
+
+## JitPack
+* [JitPack](https://jitpack.io/)
+* [Guide for Gradle Projects](https://jitpack.io/docs/BUILDING/#gradle-projects)
+* [GradleModular](https://github.com/jitpack/gradle-modular)
