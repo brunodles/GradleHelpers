@@ -13,17 +13,34 @@ This could also be used as a helper to show how to use some of gradle capabiliti
 ## Cexec Task - Custom Execute
 
 This is a simple executor, sometimes the default `exec` task does not work as expected.
-
 I wrote this simple task just to trigger some terminal commands from a gradle task.
-It may looks strange if you only know the basic gradle commands.
 
-Try to imagine the following situations:
-  * Run something before install the app on android. Like the `development backEnd App`, `mocked Api` or anything like thad.
-  * Grab information from the PC to use on the app. When I'm working with both backEnd and Android App,
-  I want to use *my pc IP address* as `API_URL` but I don't want to keep looking on my IP address manually.
-  So we can use a task to do that for us.
+It's on another repo to simplify the releases, the link is [here](https://github.com/brunodles/cexec).
+There are few examples about how to use it.
 
-I use the `cexec` task to do those tasks. Keep reading, the `IP Grabber` will have it's own task.
+## JitPack
+
+This is just a simple gradle file that can be used to keep some jitpack tasks.
+
+The idea around it is to just import this file, instead of copy the tasks.
+
+```gradle
+apply from: 'jitPack.gradle'
+apply from: rootProject.file('jitPack.gradle')
+apply from: uri('https://raw.githubusercontent.com/brunodles/GradleHelpers/master/jitpack/jitPack.gradle')
+```
+
+In the code above we have 3 options about how to import a gradle file into another.
+
+1. Apply from relative path.
+2. Apply from root project path.
+3. Apply from a uri, won't work without internet.
+
+I prefer to copy the script into the `gradle` dir, you will be able to see some projects using this way too.
+
+```gradle
+apply from: rootProject.file('gradle/jitPack.gradle')
+```
 
 # Contributing
 
