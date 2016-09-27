@@ -30,7 +30,7 @@ apply from: rootProject.file('jitPack.gradle')
 apply from: uri('https://raw.githubusercontent.com/brunodles/GradleHelpers/master/jitpack/jitPack.gradle')
 ```
 
-In the code above we have 3 options about how to import a gradle file into another.
+In the code above we have 3 ways to import a gradle file into another.
 
 1. Apply from relative path.
 2. Apply from root project path.
