@@ -42,6 +42,21 @@ I prefer to copy the script into the `gradle` dir, you will be able to see some 
 apply from: rootProject.file('gradle/jitPack.gradle')
 ```
 
+## Ip Getter
+
+This is a script that I found on internet, with it the app is able to change the API address depending on build type.
+
+To use it you just need to apply the script.
+Take a look on what we did for [jitpack](## JitPack).
+
+```gradle
+apply from: 'ip.gradle'
+apply from: rootProject.file('ip.gradle')
+apply from: uri('https://raw.githubusercontent.com/brunodles/GradleHelpers/master/ipgetter/ip.gradle')
+```
+
+I also release this as a gradle plugin, with makes it easy to use.
+
 # Contributing
 
 You can contribute but showing your custom tasks, or submitting a new task.
