@@ -85,6 +85,14 @@ I also release this as a [gradle plugin](https://github.com/brunodles/IpGetter),
 
 ### How to use
 
+# My Gradle Plugins
+
+Here are the links to my other gradle plugins/tasks.
+
+* [Custom Execute](https://github.com/brunodles/cexec)
+* [Slack Upload](https://github.com/brunodles/SlackUpload)
+* [IpGetter](https://github.com/brunodles/IpGetter)
+
 # Contributing
 
 You can contribute but showing your custom tasks, or submitting a new task.
