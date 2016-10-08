@@ -8,6 +8,8 @@ The idea was simple, find and provide a way to reuse those tasks without messing
 
 This could also be used as a helper to show how to use some of gradle capabilities.
 
+# Setup
+
 # What is in this Repo?
 
 ## Cexec Task - Custom Execute
@@ -46,6 +48,7 @@ apply from: rootProject.file('gradle/jitPack.gradle')
 
 This is a script that I found on internet, with it the app is able to change the API address depending on build type.
 
+### Setup
 To use it you just need to apply the script.
 Take a look on what we did for [jitpack](## JitPack).
 
@@ -55,7 +58,32 @@ apply from: rootProject.file('ip.gradle')
 apply from: uri('https://raw.githubusercontent.com/brunodles/GradleHelpers/master/ipgetter/ip.gradle')
 ```
 
-I also release this as a gradle plugin, with makes it easy to use.
+### How to use
+After the `apply` you need to use the `getApiUrl` method. To do so, you need to create a `buildConfigField` inside your **app level gradle file** `project/app/build.gradle`.
+
+```gradle
+apply from: rootProject.file('gradle/ip.gradle')
+...
+android {
+  ...
+  defaultConfig {
+    ...
+    buildConfigField "String", "API_URL", '"http://localhost"'
+  }
+  buildTypes {
+    ...
+    debug {
+      ...
+      buildConfigField "String", "API_URL", "\"${getApiUrl()}\""
+    }
+  }
+}
+```
+
+### Another Way to use and more Examples
+I also release this as a [gradle plugin](https://github.com/brunodles/IpGetter), with makes it easy to use.
+
+### How to use
 
 # Contributing
 
