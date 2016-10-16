@@ -8,7 +8,13 @@ The idea was simple, find and provide a way to reuse those tasks without messing
 
 This could also be used as a helper to show how to use some of gradle capabilities.
 
-# Setup
+# My Gradle Plugins
+
+Here are the links to my other gradle plugins/tasks.
+
+* [Custom Execute](https://github.com/brunodles/cexec)
+* [Slack Upload](https://github.com/brunodles/SlackUpload)
+* [IpGetter](https://github.com/brunodles/IpGetter)
 
 # What is in this Repo?
 
@@ -131,13 +137,34 @@ task changeVersionName() {
 project.tasks.getByName('preBuild').dependsOn('changeVersionName')
 ```
 
-# My Gradle Plugins
+## Git
+This is a simple file to integrate some of git functions in your gradle file.
+I wrote it to simplify some of the tasks I have to do on the job, on my own projects and even on the OpenSource projects.
 
-Here are the links to my other gradle plugins/tasks.
+### Setup
 
-* [Custom Execute](https://github.com/brunodles/cexec)
-* [Slack Upload](https://github.com/brunodles/SlackUpload)
-* [IpGetter](https://github.com/brunodles/IpGetter)
+```gradle
+apply from: 'git.gradle'
+apply from: rootProject.file('git.gradle')
+apply from: uri('https://raw.githubusercontent.com/brunodles/GradleHelpers/master/git/git.gradle')
+```
+
+### How to use
+Right now, I just wrote two tasks.
+
+#### Last tag in current branch
+This method can get the last tag on the current branch.
+The idea is simple, I can use the tag anywhere in my gradle file, but I wrote it to make my life easier to make my OS releases, since JitPack uses only my repo tag, I made the command `gradle install` do the same.
+
+```gradle
+group 'com.github.brunodles'
+version getLastTagInCurrentBranch()
+```
+
+#### Current Branch Name
+This method can get the current branch name.
+Can be used anywhere in the gradle file.
+I wrote it to be used in together with Slackupload, but you can use to add some more informations to your build info, for crash and analytics tools.
 
 # Contributing
 
@@ -157,6 +184,7 @@ If you're using this plugin, please give me some credits too.
 ## Gradle
 * [Writing Custom Task Classes](https://docs.gradle.org/current/userguide/custom_tasks.html)
 * [Writing Custom Plugins](https://docs.gradle.org/current/userguide/custom_plugins.html)
+* [Delay Task Configuration](https://discuss.gradle.org/t/how-do-you-delay-configuration-of-a-task-by-a-custom-plugin-using-the-extension-method/6766)
 
 ## Ip Inject
 This one have many sources, I don't remember where I found it at first, it was on 2014.
@@ -172,3 +200,7 @@ Thanks to Barry, he wrote a sample about how to write a plugin to change the ver
 * [JitPack](https://jitpack.io/)
 * [Guide for Gradle Projects](https://jitpack.io/docs/BUILDING/#gradle-projects)
 * [GradleModular](https://github.com/jitpack/gradle-modular)
+
+## Read Inputs on Gradle tasks
+http://mrhaki.blogspot.com.br/2010/09/gradle-goodness-get-user-input-values.html
+https://medium.com/@jagonzalez.develop/how-manage-android-plugin-for-gradle-version-in-a-team-df66b904c6b2#.9q7v9ex3a
