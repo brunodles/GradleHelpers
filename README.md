@@ -204,3 +204,7 @@ Thanks to Barry, he wrote a sample about how to write a plugin to change the ver
 ## Read Inputs on Gradle tasks
 http://mrhaki.blogspot.com.br/2010/09/gradle-goodness-get-user-input-values.html
 https://medium.com/@jagonzalez.develop/how-manage-android-plugin-for-gradle-version-in-a-team-df66b904c6b2#.9q7v9ex3a
+
+# Links
+* [Maven Push gradle](https://github.com/chrisbanes/gradle-mvn-push)
+* [Pushing AARs to Maven Central](http://chris.banes.me/2013/08/27/pushing-aars-to-maven-central/)
