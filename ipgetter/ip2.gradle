@@ -1,0 +1,84 @@
+ext.localIpOr = { defaultUrl ->
+    return new Api(project).localIpOr(defaultUrl)
+}
+
+task printIpProps {
+    doLast {
+        printProp project, Api.USE_MOCK
+        printProp project, Api.LOCAL_IP_INTERFACE
+        printProp project, Api.LOCAL_PORT
+        println new Api(project).localIpOr('Failed to get ip')
+    }
+}
+
+final class Api {
+
+    public static final String USE_MOCK = 'api.use_mock'
+    public static final String LOCAL_IP_INTERFACE = 'api.local_ip_interface'
+    public static final String LOCAL_PORT = 'api.local_port'
+
+    private final Project project
+
+    Api(Project project) {
+        this.project = project
+    }
+
+    String localIpOr(String defaultUrl) {
+        if (!validProperties()) return defaultUrl
+
+        def propInterface = project.property(LOCAL_IP_INTERFACE)
+        def port = project.property(LOCAL_PORT)
+        def ip = getIp(propInterface)
+        if (!ip) return defaultUrl
+        return "http://${ip}:${port}"
+    }
+
+    boolean validProperties() {
+        return (project.hasProperty(USE_MOCK)
+                && project.property(USE_MOCK).toBoolean()
+                && project.hasProperty(LOCAL_IP_INTERFACE)
+                && project.hasProperty(LOCAL_PORT))
+    }
+
+    def localUrl() {
+        if (project.hasProperty(LOCAL_IP_INTERFACE)) {
+            def propInterface = project.property(LOCAL_IP_INTERFACE)
+            def port = project.property(LOCAL_PORT)
+            def ip = getIp(propInterface)
+            if (!ip) return null
+            return "http://${ip}:${port}"
+        }
+        return null
+    }
+
+    static String getIp(String propInterface) {
+        for (ipInterface in [propInterface, 'wlan0', 'eth0']) {
+            if (ipInterface == null) continue
+            def ip = getNetworkInterfaceIp(ipInterface)
+            if (ip != null) {
+                return ip
+            }
+        }
+        return null
+    }
+
+    static String getNetworkInterfaceIp(String interfaceName) {
+        NetworkInterface iface = NetworkInterface.getByName(interfaceName)
+        if (iface == null) return null
+        for (InterfaceAddress address : iface.getInterfaceAddresses()) {
+            String ip = address.getAddress().getHostAddress()
+            if (ip.length() <= 15) {
+                return ip
+            }
+        }
+        return null
+    }
+}
+
+
+static def printProp(Project project, String name) {
+    if (project.hasProperty(name))
+        println name + "=" + project.property(name)
+    else
+        println "$name does not exists"
+}

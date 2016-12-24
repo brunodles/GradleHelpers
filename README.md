@@ -86,6 +86,9 @@ android {
 }
 ```
 
+### More Info
+I've added another way to setup this, [take a look](ipgetter)
+
 ### Another Way to use and more Examples
 I also release this as a [gradle plugin](https://github.com/brunodles/IpGetter), with makes it easy to use.
 
