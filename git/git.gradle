@@ -5,3 +5,7 @@ ext.getCurrentBranchName = { ->
 ext.getLastTagInCurrentBranch = { ->
     return 'git describe --tags --abbrev=0'.execute().text.trim()
 }
+
+ext.getCurrentCommitTag = { -> 
+    return 'git log -1 --oneline --decorate | grep -Eo 'tag:? ([0-9\.]+)' | cut -d' ' -f2'.execute().text.trim()
+}
