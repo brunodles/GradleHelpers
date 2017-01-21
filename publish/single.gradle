@@ -1,0 +1,81 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+group mavenRoot.group
+version mavenRoot.version
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = mavenModule.artifact
+        pom.project {
+            name mavenModule.name
+            url mavenRoot.site
+            scm {
+                connection mavenRoot.git
+                developerConnection mavenRoot.git
+                url mavenRoot.git
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId mavenRoot.group
+            artifactId mavenModule.artifact
+            version mavenRoot.version
+        }
+    }
+}
+
+bintray {
+    // Load the properties from `~/.gradle/gradle.properties`
+    if (project.hasProperty("bintray.user") && project.hasProperty("bintray.apikey")) {
+        user = project.property("bintray.user")
+        key = project.property("bintray.apikey")
+    } else if (System.getenv().containsKey('BINTRAY_USER')
+            && System.getenv().containsKey('BINTRAY_APIKEY')) {
+        user = System.getenv('BINTRAY_USER')
+        key = System.getenv('BINTRAY_APIKEY')
+    } else {
+        logger.info('Bintray user/apikey not found')
+    }
+    publications = ['MyPublication']
+
+    configurations = ['archives']
+    pkg {
+        repo = mavenRoot.repo
+        name = mavenModule.artifact
+//        userOrg = mavenRoot.name
+        websiteUrl = mavenRoot.site
+        vcsUrl = mavenRoot.git
+        licenses = ["mit"]
+        publish = true
+        version {
+            name = mavenRoot.version
+            released = new Date()
+            vcsTag = mavenRoot.tag
+        }
+    }
+}
+
+project.tasks.getByName('bintrayUpload').dependsOn('install')

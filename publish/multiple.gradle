@@ -1,0 +1,81 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+group maven.group
+version maven.version
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = maven.artifact
+        pom.project {
+            name maven.name
+            url maven.site
+            scm {
+                connection maven.git
+                developerConnection maven.git
+                url maven.git
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId maven.group
+            artifactId maven.artifact
+            version maven.version
+        }
+    }
+}
+
+bintray {
+    // Load the properties from `~/.gradle/gradle.properties`
+    if (project.hasProperty("bintray.user") && project.hasProperty("bintray.apikey")) {
+        user = project.property("bintray.user")
+        key = project.property("bintray.apikey")
+    } else if (System.getenv().containsKey('BINTRAY_USER')
+            && System.getenv().containsKey('BINTRAY_APIKEY')) {
+        user = System.getenv('BINTRAY_USER')
+        key = System.getenv('BINTRAY_APIKEY')
+    } else {
+        logger.info('Bintray user/apikey not found')
+    }
+    publications = ['MyPublication']
+
+    configurations = ['archives']
+    pkg {
+        repo = maven.repo
+        name = maven.artifact
+//        userOrg = maven.name
+        websiteUrl = maven.site
+        vcsUrl = maven.git
+        licenses = ["mit"]
+        publish = true
+        version {
+            name = maven.version
+            released = new Date()
+            vcsTag = maven.tag
+        }
+    }
+}
+
+project.tasks.getByName('bintrayUpload').dependsOn('install')
