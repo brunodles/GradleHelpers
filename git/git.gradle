@@ -7,5 +7,5 @@ ext.getLastTagInCurrentBranch = { ->
 }
 
 ext.getCurrentCommitTag = { -> 
-    return 'git log -1 --oneline --decorate | grep -Eo 'tag:? ([0-9\.]+)' | cut -d' ' -f2'.execute().text.trim()
+    return "git log -1 --oneline --decorate | grep -Eo 'tag:? ([0-9\\.]+)' | cut -d' ' -f2".execute().text.trim()
 }
