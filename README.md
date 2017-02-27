@@ -205,8 +205,11 @@ Thanks to Barry, he wrote a sample about how to write a plugin to change the ver
 * [GradleModular](https://github.com/jitpack/gradle-modular)
 
 ## Read Inputs on Gradle tasks
-http://mrhaki.blogspot.com.br/2010/09/gradle-goodness-get-user-input-values.html
-https://medium.com/@jagonzalez.develop/how-manage-android-plugin-for-gradle-version-in-a-team-df66b904c6b2#.9q7v9ex3a
+* [Get user imput values](http://mrhaki.blogspot.com.br/2010/09/gradle-goodness-get-user-input-values.html)
+* [Manage version in a Team](https://medium.com/@jagonzalez.develop/how-manage-android-plugin-for-gradle-version-in-a-team-df66b904c6b2#.9q7v9ex3a)
+
+## Gradle running groovy scripts
+* [Running Groovy scripts](http://mrhaki.blogspot.com.br/2014/09/gradle-goodness-running-groovy-scripts.html)
 
 # Links
 * [Maven Push gradle](https://github.com/chrisbanes/gradle-mvn-push)
