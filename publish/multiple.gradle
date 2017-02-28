@@ -2,8 +2,8 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
-group maven.group
-version maven.version
+group mavenRoot.group
+version mavenRoot.version
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -21,14 +21,14 @@ artifacts {
 
 install {
     repositories.mavenInstaller {
-        pom.artifactId = maven.artifact
+        pom.artifactId = mavenModule.artifact
         pom.project {
-            name maven.name
-            url maven.site
+            name mavenModule.name
+            url mavenRoot.site
             scm {
-                connection maven.git
-                developerConnection maven.git
-                url maven.git
+                connection mavenRoot.git
+                developerConnection mavenRoot.git
+                url mavenRoot.git
             }
         }
     }
@@ -40,9 +40,9 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
-            groupId maven.group
-            artifactId maven.artifact
-            version maven.version
+            groupId mavenRoot.group
+            artifactId mavenModule.artifact
+            version mavenRoot.version
         }
     }
 }
@@ -63,17 +63,17 @@ bintray {
 
     configurations = ['archives']
     pkg {
-        repo = maven.repo
-        name = maven.artifact
-//        userOrg = maven.name
-        websiteUrl = maven.site
-        vcsUrl = maven.git
+        repo = mavenRoot.repo
+        name = mavenModule.artifact
+//        userOrg = mavenRoot.name
+        websiteUrl = mavenRoot.site
+        vcsUrl = mavenRoot.git
         licenses = ["mit"]
         publish = true
         version {
-            name = maven.version
+            name = mavenRoot.version
             released = new Date()
-            vcsTag = maven.tag
+            vcsTag = mavenRoot.tag
         }
     }
 }
