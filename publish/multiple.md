@@ -46,4 +46,4 @@ name     | description | sample
 artifact | Used to compound the usage url | ${maven.artifact}-processor
 name     | Name of the module | ${maven.name} Processor
 
-Here can use the `root` values too
+Here can use the `root` values to compose the module values.
