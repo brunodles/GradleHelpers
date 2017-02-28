@@ -5,7 +5,7 @@ When your project have single module to be released, you can use [single.gradle]
 Just add the script bellow in your `build.gradle`
 
 ```gradle
-ext.mavenRoot = [
+ext.maven = [
         group   : "<com.group>",
         version : '<version>',
         repo    : "maven_repo",
