@@ -36,8 +36,8 @@ tag       | Something to identify the release | rc
 In your module `build.gradle` add this:
 ```gradle
 ext.mavenModule = [
-        artifact: "${maven.artifact}-submodule",
-        name    : "${maven.name} Sub-Module"
+        artifact: "${mavenRoot.artifact}-submodule",
+        name    : "${mavenRoot.name} Sub-Module"
 ]
 apply from: rootProject.file('gradle/publish.gradle')
 ```
@@ -46,4 +46,4 @@ name     | description | sample
 artifact | Used to compound the usage url | ${maven.artifact}-processor
 name     | Name of the module | ${maven.name} Processor
 
-Here can use the `root` values to
+Here can use the `root` values too
