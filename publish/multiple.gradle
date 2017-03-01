@@ -58,8 +58,8 @@ def property(String projectName, String systemName, def defaultValue) {
 }
 
 bintray {
-    def user = property("bintray.user", "BINTRAY_USER", null)
-    def key = property("bintray.apikey", "BINTRAY_APIKEY", null)
+    user = property("bintray.user", "BINTRAY_USER", null)
+    key = property("bintray.apikey", "BINTRAY_APIKEY", null)
     def bintrayRepo = property("bintray.repo", "BINTRAY_REPO", maven.repo)
     logger.info("Bintray user $user")
     logger.info("Bintray repo $bintrayRepo")
