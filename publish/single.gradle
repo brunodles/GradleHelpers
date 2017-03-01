@@ -36,7 +36,7 @@ install {
 
 publishing {
     publications {
-        MyPublication(MavenPublication) {
+        MainPublications(MavenPublication) {
             from components.java
             artifact sourcesJar
             artifact javadocJar
@@ -57,6 +57,11 @@ def property(String projectName, String systemName, def defaultValue) {
         return defaultValue
 }
 
+static def or(def ... values) {
+    for (def value : values)
+        if (value != null) return value
+}
+
 bintray {
     user = property("bintray.user", "BINTRAY_USER", null)
     key = property("bintray.apikey", "BINTRAY_APIKEY", null)
@@ -67,17 +72,20 @@ bintray {
         logger.info('Bintray user/apikey not found')
         throw new GradleException('Bintray user/apikey not found')
     }
-    publications = ['MyPublication']
-
+    publications = ['MainPublications']
     configurations = ['archives']
+    publish = true
+    override = or(maven.override, false)
     pkg {
         repo = bintrayRepo
         name = maven.artifact
-//        userOrg = maven.name
+        userOrg = or(maven.userOrg, null)
+        desc = or(maven.desc, null)
         websiteUrl = maven.site
-        vcsUrl = maven.git
-        licenses = ["mit"]
-        publish = true
+        issueTrackerUrl = or(maven.issueTrackerUrl, "${maven.site}/issues")
+        vcsUrl = or(maven.git, "${maven.site}.git")
+        licenses = [or(maven.license, "mit")]
+        publicDownloadNumbers = true
         version {
             name = maven.version
             released = new Date()
