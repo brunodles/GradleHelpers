@@ -6,6 +6,7 @@ Just add the script bellow in your `build.gradle`
 
 ```gradle
 ext.publishing = [
+        group          : "com.brunodles",
         version        : '0.1.1',
         repo           : "TempRepo",
         name           : "Oleaster-SuiteRunner",

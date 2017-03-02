@@ -10,6 +10,7 @@ The setup is done in two levels, to avoid duplicated settings and possible mista
 In your root `build.gradle` add this:
 ```gradle
 ext.publishingRoot = [
+        group          : "com.brunodles",
         version        : '0.1.1',
         repo           : "TempRepo",
         name           : "Oleaster-SuiteRunner",
