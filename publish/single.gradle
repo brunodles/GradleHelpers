@@ -2,8 +2,8 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
-group maven.group
-version maven.version
+group publishing.group
+version publishing.version
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -19,30 +19,58 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.artifactId = maven.artifact
-        pom.project {
-            name maven.name
-            url maven.site
-            scm {
-                connection maven.git
-                developerConnection maven.git
-                url maven.git
-            }
+def pomConfig = {
+    licenses {
+        license {
+            name publishing.license.name
+            url publishing.license.url
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            name publishing.developer.name
+            email publishing.developer.email
         }
     }
 }
-
+// Maven Local
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = publishing.artifact
+        pom.project {
+            name publishing.name
+            url publishing.site
+            scm {
+                connection publishing.git
+                developerConnection publishing.git
+                url publishing.git
+            }
+        }
+        pom.withXml {
+            def root = asNode()
+            root.appendNode('description', publishing.desc)
+            root.children().last() + pomConfig
+        }
+    }
+}
+// Maven Central
 publishing {
     publications {
-        MainPublications(MavenPublication) {
+        mainPublication(MavenPublication) {
             from components.java
             artifact sourcesJar
             artifact javadocJar
-            groupId maven.group
-            artifactId maven.artifact
-            version maven.version
+            groupId publishing.group
+            artifactId publishing.artifact
+            version publishing.version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', publishing.desc)
+                root.appendNode('name', publishing.name)
+                root.appendNode('url', publishing.site)
+                root.children().last() + pomConfig
+            }
         }
     }
 }
@@ -65,33 +93,33 @@ static def or(def ... values) {
 bintray {
     user = property("bintray.user", "BINTRAY_USER", null)
     key = property("bintray.apikey", "BINTRAY_APIKEY", null)
-    def bintrayRepo = property("bintray.repo", "BINTRAY_REPO", maven.repo)
+    def bintrayRepo = property("bintray.repo", "BINTRAY_REPO", publishing.repo)
     logger.info("Bintray user $user")
     logger.info("Bintray repo $bintrayRepo")
     if (user == null || key == null) {
         logger.info('Bintray user/apikey not found')
         throw new GradleException('Bintray user/apikey not found')
     }
-    publications = ['MainPublications']
+    publications = ['mainPublication']
     configurations = ['archives']
     publish = true
-    override = or(maven.override, false)
+    override = or(publishing.override, false)
     pkg {
         repo = bintrayRepo
-        name = maven.artifact
-        userOrg = or(maven.userOrg, null)
-        desc = or(maven.desc, null)
-        websiteUrl = maven.site
-        issueTrackerUrl = or(maven.issueTrackerUrl, "${maven.site}/issues")
-        vcsUrl = or(maven.git, "${maven.site}.git")
-        licenses = [or(maven.license, "mit")]
+        name = publishing.artifact
+        userOrg = or(publishing.userOrg, null)
+        desc = or(publishing.desc, null)
+        websiteUrl = publishing.site
+        issueTrackerUrl = or(publishing.issueTrackerUrl, "${publishing.site}/issues")
+        vcsUrl = or(publishing.git, "${publishing.site}.git")
+        licenses = [or(publishing.license.short, "mit")]
         publicDownloadNumbers = true
         version {
-            name = maven.version
+            name = publishing.version
             released = new Date()
-            vcsTag = maven.tag
+            vcsTag = publishing.tag
         }
     }
 }
 
-project.tasks.getByName('bintrayUpload').dependsOn('install')
+project.tasks.getByName('bintrayUpload').dependsOn('install', 'generatePomFileForMainPublicationPublication')
