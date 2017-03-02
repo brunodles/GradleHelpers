@@ -1,28 +1,29 @@
 # Single
 When your project have single module to be released, you can use [single.gradle](single.gradle) file.
 
-## Setup
+## Sample
 Just add the script bellow in your `build.gradle`
 
 ```gradle
-ext.maven = [
-        group   : "<com.group>",
-        version : '<version>',
-        repo    : "maven_repo",
-        name    : "Presentable Name",
-        artifact: "artifactname",
-        site    : "http://group.com/artifactname",
-        git     : "git@github.com:user/artifactname.git",
-        tag     : "<tag>"
+ext.publishing = [
+        version        : '0.1.1',
+        repo           : "TempRepo",
+        name           : "Oleaster-SuiteRunner",
+        artifact       : "oleaster-suiterunner",
+        site           : "https://github.com/brunodles/OleasterSuiteRunner",
+        issueTrackerUrl: "https://github.com/brunodles/OleasterSuiteRunner/issues",
+        git            : "git@github.com:brunodles/OleasterSuiteRunner.git",
+        tag            : 'git rev-parse --abbrev-ref HEAD'.execute().text.trim(),
+        override       : true,
+        desc           : "A jUnit test runner to format Oleaster tests as a suite.",
+        license        : [
+                short: "mit",
+                name : "MIT License",
+                url  : "http://www.opensource.org/licenses/mit-license.php"
+        ],
+        developer      : [
+                name : "Bruno de Lima e Silva",
+                email: "dlimaun@gmail.com"
+        ]
 ]
 ```
-name      | description | Sample
-----------|-------------|-------
-group     | Usually the same as application package | com.brunodles
-version   | The version of this project, [read this](http://server.org/) | 1.0.0
-repo      | The name of the repository on [bintray](https://bintray.com/) | TestRepo
-name      | Name of the project | PicPicker
-artifact  | Used to compound the usage url | picpicker
-site      | Site of the library, maybe shown for the users | http://brunodles.github.io/picpicker
-git       | Git url for the Source code | git@github.com:brunodles/picpicker.git
-tag       | Something to identify the release | rc
