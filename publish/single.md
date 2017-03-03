@@ -5,15 +5,16 @@ When your project have single module to be released, you can use [single.gradle]
 Just add the script bellow in your `build.gradle`
 
 ```gradle
+def gitPath = "github.com/brunodles/OleasterSuiteRunner"
 ext.publishing = [
         group          : "com.brunodles",
         version        : '0.1.1',
         repo           : "TempRepo",
         name           : "Oleaster-SuiteRunner",
         artifact       : "oleaster-suiterunner",
-        site           : "https://github.com/brunodles/OleasterSuiteRunner",
-        issueTrackerUrl: "https://github.com/brunodles/OleasterSuiteRunner/issues",
-        git            : "git@github.com:brunodles/OleasterSuiteRunner.git",
+        gitPath        : gitPath,
+        site           : "https://$gitPath",
+        issueTrackerUrl: "https://$gitPath/issues",
         tag            : 'git rev-parse --abbrev-ref HEAD'.execute().text.trim(),
         override       : true,
         desc           : "A jUnit test runner to format Oleaster tests as a suite.",

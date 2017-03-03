@@ -42,9 +42,9 @@ install {
             name publishingModule.name
             url publishingRoot.site
             scm {
-                connection publishingRoot.git
-                developerConnection publishingRoot.git
-                url publishingRoot.git
+                connection "scm:git:git://${publishingRoot.gitPath}.git"
+                developerConnection "scm:git:ssh://${publishingRoot.gitPath}.git"
+                url "http://${publishingRoot.gitPath}"
             }
         }
         pom.withXml {
@@ -55,6 +55,13 @@ install {
     }
 }
 // Maven Central
+def scmVcs = {
+    scm {
+        connection "scm:git:git://${publishingRoot.gitPath}.git"
+        developerConnection "scm:git:ssh://${publishingRoot.gitPath}.git"
+        url "http://${publishingRoot.gitPath}"
+    }
+}
 publishing {
     publications {
         mainPublication(MavenPublication) {
@@ -70,6 +77,7 @@ publishing {
                 root.appendNode('name', publishingModule.name)
                 root.appendNode('url', publishingRoot.site)
                 root.children().last() + pomConfig
+                root.children().last() + scmVcs
             }
         }
     }
@@ -111,7 +119,7 @@ bintray {
         desc = or(publishingModule.desc, publishingModule.desc, null)
         websiteUrl = publishingRoot.site
         issueTrackerUrl = or(publishingRoot.issueTrackerUrl, "${publishingRoot.site}/issues")
-        vcsUrl = or(publishingRoot.git, "${publishingRoot.site}.git")
+        vcsUrl = "http://" + or(publishingRoot.git, "${publishingRoot.site}.git")
         licenses = [or(publishingRoot.license, "mit")]
         publicDownloadNumbers = true
         version {

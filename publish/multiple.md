@@ -9,15 +9,16 @@ The setup is done in two levels, to avoid duplicated settings and possible mista
 ### Root
 In your root `build.gradle` add this:
 ```gradle
+def gitPath = "github.com/brunodles/OleasterSuiteRunner"
 ext.publishingRoot = [
         group          : "com.brunodles",
         version        : '0.1.1',
         repo           : "TempRepo",
         name           : "Oleaster-SuiteRunner",
         artifact       : "oleaster-suiterunner",
-        site           : "https://github.com/brunodles/OleasterSuiteRunner",
-        issueTrackerUrl: "https://github.com/brunodles/OleasterSuiteRunner/issues",
-        git            : "git@github.com:brunodles/OleasterSuiteRunner.git",
+        gitPath        : gitPath,
+        site           : "https://$gitPath",
+        issueTrackerUrl: "https://$gitPath/issues",
         tag            : 'git rev-parse --abbrev-ref HEAD'.execute().text.trim(),
         override       : true,
         desc           : "A jUnit test runner to format Oleaster tests as a suite.",
