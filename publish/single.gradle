@@ -87,7 +87,8 @@ publishing {
 def property(String propertyName, String systemName, def defaultValue) {
     // Load the properties from `~/.gradle/gradle.properties`
     Properties localProperties = new Properties()
-    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (project.rootProject.file('local.properties').exists())
+        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
     if (project.hasProperty(propertyName))
         return project.property(propertyName)
     else if (System.getenv().containsKey(systemName))
