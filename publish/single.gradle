@@ -84,12 +84,16 @@ publishing {
     }
 }
 
-def property(String projectName, String systemName, def defaultValue) {
+def property(String propertyName, String systemName, def defaultValue) {
     // Load the properties from `~/.gradle/gradle.properties`
-    if (project.hasProperty(projectName))
-        return project.property(projectName)
+    Properties localProperties = new Properties()
+    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (project.hasProperty(propertyName))
+        return project.property(propertyName)
     else if (System.getenv().containsKey(systemName))
         return System.getenv(systemName)
+    else if (localProperties.containsKey(propertyName))
+        return localProperties.getProperty(propertyName)
     else
         return defaultValue
 }
