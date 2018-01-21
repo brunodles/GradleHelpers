@@ -1,15 +1,24 @@
-task updateScripts() {
-    doLast {
-        if (!project.hasProperty('scripter')) {
-            println "Setup your files using `ext.scripter : [ script = \"url\"]`"
-            return
-        }
-        for (entry in scripter) {
-            println "${entry.key} ${entry.value}"
-            File file = new File(entry.key)
-            new URL(entry.value).withInputStream { i ->
-                file.withOutputStream { it << i }
+if (!project.tasks.findByName('updateScripts'))
+    project.task('updateScripts') {
+        doLast {
+            if (!project.hasProperty('scripter')) {
+                println "Setup your files using `ext.scripter : [ script = \"url\"]`"
+                return
+            }
+            for (entry in scripter) {
+                println "${entry.key} ${entry.value}"
+                File file = new File(entry.key.toString())
+                new URL(entry.value.toString()).withInputStream { i ->
+                    file.withOutputStream { it << i }
+                }
             }
         }
     }
-}
+
+if (project.hasProperty('scripter'))
+    for (entry in scripter)
+        try {
+            project.apply from: entry.key
+        } catch (Throwable t) {
+            System.err.println(t.message)
+        }
