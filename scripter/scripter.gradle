@@ -16,9 +16,8 @@ if (!project.tasks.findByName('updateScripts'))
     }
 
 if (project.hasProperty('scripter'))
-    for (entry in scripter)
-        try {
-            project.apply from: entry.key
-        } catch (Throwable t) {
-            System.err.println(t.message)
-        }
+    for (entry in scripter) {
+        if (entry.key.contains('scripter'))
+            continue
+        project.apply from: rootProject.file(entry.key)
+    }
