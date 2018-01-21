@@ -109,4 +109,4 @@ bintray {
     }
 }
 
-project.tasks.getByName('bintrayUpload').dependsOn('install', 'generatePomFileForMainPublicationPublication')
+project.tasks.getByName('bintrayUpload').dependsOn('assemble', 'generatePomFileForMainPublicationPublication')
