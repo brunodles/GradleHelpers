@@ -1,4 +1,3 @@
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
@@ -22,38 +21,19 @@ artifacts {
 def pomConfig = {
     licenses {
         license {
-            name publishing.license.name
-            url publishing.license.url
+            name publishingRoot.license.name
+            url publishingRoot.license.url
             distribution "repo"
         }
     }
     developers {
         developer {
-            name publishing.developer.name
-            email publishing.developer.email
+            name publishingRoot.developer.name
+            email publishingRoot.developer.email
         }
     }
 }
-// Maven Local
-install {
-    repositories.mavenInstaller {
-        pom.artifactId = publishingModule.artifact
-        pom.project {
-            name publishingModule.name
-            url publishingRoot.site
-            scm {
-                connection "scm:git:git://${publishingRoot.gitPath}.git"
-                developerConnection "scm:git:ssh://${publishingRoot.gitPath}.git"
-                url "http://${publishingRoot.gitPath}"
-            }
-        }
-        pom.withXml {
-            def root = asNode()
-            root.appendNode('description', publishingRoot.desc)
-            root.children().last() + pomConfig
-        }
-    }
-}
+
 // Maven Central
 def scmVcs = {
     scm {
@@ -83,17 +63,12 @@ publishing {
     }
 }
 
-def property(String propertyName, String systemName, def defaultValue) {
+def property(String projectName, String systemName, def defaultValue) {
     // Load the properties from `~/.gradle/gradle.properties`
-    Properties localProperties = new Properties()
-    if (project.rootProject.file('local.properties').exists())
-        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-    if (project.hasProperty(propertyName))
-        return project.property(propertyName)
+    if (project.hasProperty(projectName))
+        return project.property(projectName)
     else if (System.getenv().containsKey(systemName))
         return System.getenv(systemName)
-    else if (localProperties.containsKey(propertyName))
-        return localProperties.getProperty(propertyName)
     else
         return defaultValue
 }
@@ -111,7 +86,6 @@ bintray {
     logger.info("Bintray repo $bintrayRepo")
     if (user == null || key == null) {
         logger.info('Bintray user/apikey not found')
-        throw new GradleException('Bintray user/apikey not found')
     }
     publications = ['mainPublication']
     configurations = ['archives']
@@ -125,7 +99,7 @@ bintray {
         websiteUrl = publishingRoot.site
         issueTrackerUrl = or(publishingRoot.issueTrackerUrl, "${publishingRoot.site}/issues")
         vcsUrl = "http://" + or(publishingRoot.git, "${publishingRoot.site}.git")
-        licenses = [or(publishingRoot.license, "mit")]
+        licenses = [or(publishingRoot.license.short, "mit")]
         publicDownloadNumbers = true
         version {
             name = publishingRoot.version
