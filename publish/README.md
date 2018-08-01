@@ -12,8 +12,24 @@ use it for a **Android Project** it will need some more work.
 
 ## Common steps
 You need to add bintray plugin dependency in your root project.
-Take a look how to do it and check out the latest version
+
+To a deeper look how to do it and check out the latest version
 [here](https://github.com/bintray/gradle-bintray-plugin).
+
+[ ![Download](https://api.bintray.com/packages/jfrog/jfrog-jars/gradle-bintray-plugin/images/download.svg) ](https://bintray.com/jfrog/jfrog-jars/gradle-bintray-plugin/_latestVersion)
+
+In your root `build.gradle` add the plugin dependency into buildscript
+classpath:
+```gradle
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+```
 
 ## Single Release
 When your project have single module to be released
