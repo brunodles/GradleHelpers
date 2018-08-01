@@ -1,3 +1,16 @@
+/*
+Be sure to add this dependency in your root build.gradle.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+*/
+
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
@@ -87,8 +100,8 @@ publishing {
 def property(String propertyName, String systemName, def defaultValue) {
     // Load the properties from `~/.gradle/gradle.properties`
     Properties localProperties = new Properties()
-    if (project.rootProject.file('local.properties').exists())
-        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (rootProject.file('local.properties').exists())
+        localProperties.load(rootProject.file('local.properties').newDataInputStream())
     if (project.hasProperty(propertyName))
         return project.property(propertyName)
     else if (System.getenv().containsKey(systemName))
@@ -102,20 +115,14 @@ def property(String propertyName, String systemName, def defaultValue) {
 static def or(def ... values) {
     for (def value : values)
         if (value != null) return value
+    return null
 }
 
 bintray {
     user = property("bintray.user", "BINTRAY_USER", null)
     key = property("bintray.apikey", "BINTRAY_APIKEY", null)
     def bintrayRepo = property("bintray.repo", "BINTRAY_REPO", publishing.repo)
-    logger.info("Bintray user $user")
-    logger.info("Bintray repo $bintrayRepo")
-    if (user == null || key == null) {
-        logger.info('Bintray user/apikey not found')
-        throw new GradleException('Bintray user/apikey not found')
-    }
     publications = ['mainPublication']
-    configurations = ['archives']
     publish = true
     override = or(publishing.override, false)
     pkg {
