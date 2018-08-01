@@ -4,8 +4,8 @@ These scripts will help to publish something on [bintray](https://bintray.com).
 There are two way to apply this script, depends on how do you plan to release
 your libraries.
 
-* [Single](##single-Release) - For single module project
-* [Multiple](##modules-release) - For multiple module project
+* [Single](#single-Release) - For single module project
+* [Multiple](#modules-release) - For multiple module project
 
 **Warning** this script was built to run Java Projects, if you're planning to
 use it for a **Android Project** it will need some more work.
@@ -79,7 +79,7 @@ ext.publishingRoot = [
 ]
 ```
 
-But instead of applying it as we did in [single release](##single-release)
+But instead of applying it as we did in [single release](#single-release)
 we just created the common information for our library.
 
 Inside our sub-module `build.gradle` we can change resulting `publishing` data.
