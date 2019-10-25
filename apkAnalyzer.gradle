@@ -1,0 +1,60 @@
+import java.util.regex.Pattern
+import java.util.zip.ZipFile
+
+task apkAnalyzer() {
+    def apk = "app-debug.apk"
+    Map<String, Pattern> points = [
+            images      : Pattern.compile("res.+\\.(:?png|jpe?g|gif)"), // image files in png, jpeg, gif
+            xmlDrawables: Pattern.compile("res/drawable.+\\.xml"), // xml drawables
+            dex         : Pattern.compile("classes\\d*.dex"), // dex files
+            ndk         : Pattern.compile("lib"), // ndk lib
+            assets      : Pattern.compile("assets"), // all assets
+            fonts       : Pattern.compile("assets/fonts/.+"), // fonts inside assets
+            arsc        : Pattern.compile("resources\\d*.arsc"), // compressed resources
+            res         : Pattern.compile("res.+"), // umcompressed resources
+            layouts     : Pattern.compile("res/layout.+\\.xml") // all layout files
+    ]
+    def compressed = true
+    doLast() {
+        def file = new File("${project.buildDir}/outputs/apk", apk)
+        def zipFile = new ZipFile(file)
+
+        def result = new LinkedHashMap<String, Double>()
+        def sunSize = 0D;
+        def sunCompressedSize = 0D;
+        zipFile.entries().each { f ->
+            sunSize += f.size
+            sunCompressedSize += f.compressedSize
+            points.each { point ->
+                def matcher = point.value.matcher(f.name)
+                if (!matcher.find()) return
+
+                Double size = result.get(point.key)
+                if (size == null) size = 0
+                size += compressed ? f.compressedSize : f.size
+                result.put(point.key, size)
+            }
+        }
+
+        result.put("apkSize", file.size())  // Apk file size, the one used as referênce
+        result.put("sunSize", sunSize)      // The sun of each file size, probably the install size
+        result.put("sunCompressedSize", sunCompressedSize) // The sun of each file
+
+        def builder = new StringBuilder()
+        builder.append("Name, Size in MB\n")
+        result.each {
+            def size = format(it.value)
+            builder.append("${it.key}, ${size}\n")
+            println "${it.key}  ${size}"
+        }
+
+        def reports = new File("${project.buildDir}/reports/")
+        reports.mkdirs()
+        def output = new File(reports, "apkSize.csv")
+        output.write(builder.toString())
+    }
+}
+
+static Double format(Double value) {
+    return Math.round(value / (1024 * 1024) * 100) / 100
+}
