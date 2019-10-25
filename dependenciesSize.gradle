@@ -1,0 +1,23 @@
+// http://stackoverflow.com/questions/36897343/how-to-calculate-the-size-of-libraries-that-is-added-as-a-dependency-in-the-andr
+task listConfigurations {
+    doLast {
+        configurations
+                .findAll { it.name.startsWith("_") && it.name.endsWith("Apk") }
+                .each { println "${it.name}" }
+    }
+}
+
+task depsize {
+    doLast {
+        def size = 0;
+        def configuration = configurations.getByName('_debugApk') // replace `_debugApk` for one configuration, use the task `listCOnfiguration` to it figure
+        configuration.collect { it.length() / (1024 * 1024) }.each {
+            size += it
+        }
+        println "Total dependencies size: ${Math.round(size * 100) / 100} Mb\n"
+
+        configuration
+                .sort { -it.length() }
+                .each { println "${it.name} : ${Math.round(it.length() / (1024) * 100) / 100} kb" }
+    }
+}
