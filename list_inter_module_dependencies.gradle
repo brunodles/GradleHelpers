@@ -1,0 +1,25 @@
+
+task checkDependencies() {
+    doLast {
+        rootProject.getAllprojects().each { project ->
+            println "\n# ${project.path}"
+            println project.getConfigurations()
+                    .sort { it.name }
+                    .collect { config ->
+                        def dependencies = config.dependencies
+                                .findAll { it instanceof ProjectDependency }
+                                .collect { it as ProjectDependency }
+                                .collect { it.dependencyProject.path }
+                                .sort()
+                        if (dependencies == null || dependencies.isEmpty())
+                            return
+                        def result = new StringBuilder()
+                        result.append("## ${config.name}\n")
+                        result.append(dependencies.collect { "+ ${it}" }.join("\n"))
+                        return result.toString()
+                    }
+                    .findAll { it != null }
+                    .join("\n")
+        }
+    }
+}
