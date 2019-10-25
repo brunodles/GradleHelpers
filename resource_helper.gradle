@@ -1,0 +1,41 @@
+File outputPath = new File(project.buildDir, "resourcesClass")
+sourceSets.test.java.srcDirs outputPath
+
+task("compileResourcesClass") {
+    doLast {
+        outputPath.mkdirs()
+
+        def assetsDir = new File(project.projectDir, 'src/test/resources/')
+        String classContent = buildClass(assetsDir, 0)
+        File resourcesClass = new File(outputPath, "resource_helper/Resources.java")
+        resourcesClass.write(classContent)
+    }
+}
+
+tasks.getByName("compileJava").dependsOn("compileResourcesClass")
+
+static def buildClass(File file, int tabCount = 0) {
+    def tabs = ""
+    tabCount.times { tabs += "\t" }
+    def fieldName = fileToFieldName(file)
+
+    if (!file.isDirectory())
+        return "${tabs}public static String $fieldName = \"${file.path}\";\n"
+
+    String classText = ""
+    if (tabCount == 0) {
+        fieldName = fieldName.capitalize()
+        classText += "package resource_helper;\n"
+        classText += "${tabs}public class ${fieldName.capitalize()} {\n"
+    } else {
+        classText += "${tabs}public static class $fieldName {\n"
+    }
+    classText += file.listFiles().collect { buildClass(it, tabCount + 1) }.join()
+    classText += "${tabs}}\n"
+    return classText
+}
+
+static def fileToFieldName(File file) {
+    return file.name.split("[^a-zA-Z0-9]+").collect { it.capitalize() }.join().uncapitalize()
+}
+
